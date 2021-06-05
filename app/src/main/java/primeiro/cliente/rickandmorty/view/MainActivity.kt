@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import primeiro.cliente.rickandmorty.R
+import primeiro.cliente.rickandmorty.api.CharacterRepository
 import primeiro.cliente.rickandmorty.domain.CharacterData
 
 class MainActivity : AppCompatActivity() {
@@ -23,9 +24,10 @@ class MainActivity : AppCompatActivity() {
         val characters = listOf(
                 Rick, Rick,Rick, Rick
         )
-
+        val charactersApi = CharacterRepository.getCharacters()
         rvCharacters.layoutManager = layoutManager
-
         rvCharacters.adapter = CharacterAdapter(characters)
+
+
     }
 }
