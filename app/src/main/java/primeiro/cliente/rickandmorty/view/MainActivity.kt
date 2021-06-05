@@ -2,6 +2,7 @@ package primeiro.cliente.rickandmorty.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import primeiro.cliente.rickandmorty.R
@@ -23,11 +24,18 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadCharacters(rvCharacters: RecyclerView) {
         val charactersApi = CharacterRepository.getCharacters()
+
+
         charactersApi?.results?.let {
-            val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            val character : List<CharacterData> = it.map{ character ->
+                Log.d("RICK", character.species)
+                CharacterData(character.image,character.name, character.species)
+            }
+
+            val layoutManager = LinearLayoutManager(this)
             rvCharacters.post{
                 rvCharacters.layoutManager = layoutManager
-                rvCharacters.adapter = CharacterAdapter(it)
+                rvCharacters.adapter = CharacterAdapter(character)
             }
         }
 
