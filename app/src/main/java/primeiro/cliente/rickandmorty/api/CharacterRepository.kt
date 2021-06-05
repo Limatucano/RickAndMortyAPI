@@ -2,6 +2,7 @@ package primeiro.cliente.rickandmorty.api
 
 import android.util.Log
 import primeiro.cliente.rickandmorty.api.model.CharacterApiResult
+import primeiro.cliente.rickandmorty.api.model.CharacterResult
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,19 +23,28 @@ object CharacterRepository {
         service = retrofit.create(CharacterService::class.java)
     }
 
-    fun getCharacters(){
+
+
+    fun getCharacters(): CharacterApiResult? {
         val call = service.listCharacters()
+        return call.execute().body()
+//        call.enqueue(object : Callback<CharacterApiResult>{
+//            override fun onResponse(call: Call<CharacterApiResult>, response: Response<CharacterApiResult>) {
+//                Log.d("RICK_MORTY","Loaded")
+//                if(response.isSuccessful){
+//
+//
+//
+//
+//
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<CharacterApiResult>, t: Throwable) {
+//                Log.e("RICK_MORTY","Error loading")
+//            }
+//
+//        })
 
-        call.enqueue(object : Callback<CharacterApiResult>{
-            override fun onResponse(call: Call<CharacterApiResult>, response: Response<CharacterApiResult>) {
-                Log.d("RICK_MORTY","Loaded")
-            }
-
-            override fun onFailure(call: Call<CharacterApiResult>, t: Throwable) {
-                Log.e("RICK_MORTY","Error loading")
-            }
-
-        })
     }
-
 }

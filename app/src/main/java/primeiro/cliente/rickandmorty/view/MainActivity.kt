@@ -2,7 +2,6 @@ package primeiro.cliente.rickandmorty.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import primeiro.cliente.rickandmorty.R
@@ -15,19 +14,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val rvCharacters = findViewById<RecyclerView>(R.id.rvCharacters)
 
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        val Rick = CharacterData(
-                "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-                "Morty Smith",
-                "Alien"
-        )
-        val characters = listOf(
-                Rick, Rick,Rick, Rick
-        )
-        val charactersApi = CharacterRepository.getCharacters()
-        rvCharacters.layoutManager = layoutManager
-        rvCharacters.adapter = CharacterAdapter(characters)
 
+        Thread(Runnable {
+            loadCharacters(rvCharacters)
+        }).start()
+
+    }
+
+    private fun loadCharacters(rvCharacters: RecyclerView) {
+        val charactersApi = CharacterRepository.getCharacters()
+        charactersApi?.results?.let {
+            val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            rvCharacters.post{
+                rvCharacters.layoutManager = layoutManager
+                rvCharacters.adapter = CharacterAdapter(it)
+            }
+        }
 
     }
 }
